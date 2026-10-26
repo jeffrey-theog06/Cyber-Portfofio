@@ -61,20 +61,6 @@ This is a static portfolio site built from scratch with vanilla HTML, CSS, and J
 ├── script.js        — Interactive terminal engine, timeline filter, modal, clipboard
 ├── favicon.svg      — Custom cyber terminal SVG favicon
 └── README.md        — This file
-```
-
----
-
-## Before Publishing
-
-Replace the evidence placeholders with verified URLs once available:
-
-- [ ] Project GitHub repositories and documentation
-- [ ] Lab architecture screenshots and diagrams
-- [ ] CTF certificates and leaderboard links
-- [ ] Open-source contribution PR links (OWASP, Cortex-Analyzers)
-- [ ] Medium write-up article links
-- [ ] OWASP conclave attendance certificates
 
 ---
 
@@ -90,4 +76,4 @@ Then open `http://localhost:3000` in your browser. Use `Ctrl + Shift + R` to har
 
 ---
 
-*Built by J Jeffrey Shalom · Chennai, India*
+*Built by J Jeffrey Shalom · Coimbatore, India*
