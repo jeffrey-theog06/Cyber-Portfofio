@@ -1,6 +1,7 @@
 /**
  * J Jeffrey Shalom — Cybersecurity Portfolio Scripts
- * Vanilla JS: Interactive Terminal, Timeline Filtering, Modal, Copy-to-Clipboard & Scroll Reveal
+ * Vanilla JS: Interactive Terminal, Global Search Command Palette (Ctrl+K),
+ * Section Hub & Focus Mode, Live Card Filters, Modal, Copy-to-Clipboard & Scroll Reveal
  */
 
 const projects = {
@@ -98,6 +99,233 @@ const projects = {
   }
 };
 
+/**
+ * Global Search Database
+ * Exhaustive index across projects, skills, CTF records, credentials, and platforms
+ */
+const searchDatabase = [
+  // 1. Projects & Labs
+  {
+    id: "safeline",
+    title: "SafeLine WAF Lab",
+    scope: "lab",
+    badge: "Lab / WAF",
+    badgeClass: "badge-lab",
+    icon: "🛡️",
+    desc: "Application-layer traffic inspection, custom rule enforcement, and automated attack payload blocking.",
+    tags: ["SafeLine WAF", "Docker", "HTTP Inspection", "Reverse Proxy", "SQLi", "XSS"],
+    action: { type: "modal", key: "safeline" }
+  },
+  {
+    id: "pfsense",
+    title: "pfSense Firewall & Segmentation Lab",
+    scope: "lab",
+    badge: "Lab / Network",
+    badgeClass: "badge-lab",
+    icon: "🌐",
+    desc: "Virtualized multi-tier network segmentation, isolated DMZ/LAN, stateful packet filtering, and NAT policies.",
+    tags: ["pfSense 2.7", "VLAN", "Firewall Rules", "NAT", "Proxmox", "VMware"],
+    action: { type: "modal", key: "pfsense" }
+  },
+  {
+    id: "wazuh",
+    title: "Wazuh SIEM & Threat Telemetry Lab",
+    scope: "lab",
+    badge: "Lab / SIEM",
+    badgeClass: "badge-lab",
+    icon: "🚨",
+    desc: "SOC monitoring pipeline collecting Sysmon & auditd logs, File Integrity Monitoring (FIM), and alert triage.",
+    tags: ["Wazuh", "Sysmon", "FIM", "SOC", "Mimikatz Detection", "Alert Rules"],
+    action: { type: "modal", key: "wazuh" }
+  },
+  {
+    id: "airia",
+    title: "Airia AI SOC Triage Lab",
+    scope: "lab",
+    badge: "Lab / AI SOC",
+    badgeClass: "badge-lab",
+    icon: "🤖",
+    desc: "LLM-assisted alert contextualization and triage automation with strict human-in-the-loop analyst validation.",
+    tags: ["Airia", "AI", "LLM", "Prompt Engineering", "SOC Automation", "Triage"],
+    action: { type: "modal", key: "airia" }
+  },
+
+  // 2. CTF Milestones
+  {
+    id: "dcg-ctf",
+    title: "DCG Coimbatore CTF (6th Place Finish)",
+    scope: "ctf",
+    badge: "CTF Top 5%",
+    badgeClass: "badge-ctf",
+    icon: "🏆",
+    desc: "6th place finish out of 120+ teams. Solved unauthenticated SQLi bypass & reconstructed Wireshark reverse shell PCAP streams.",
+    tags: ["Web Security", "SQL Injection", "Wireshark", "PCAP Forensics", "Team Triage"],
+    action: { type: "jump", section: "timeline", selector: ".timeline-entry[data-category='ctf']" }
+  },
+  {
+    id: "inter-college-ctf",
+    title: "National Inter-College CTF (Top 50 Finalist)",
+    scope: "ctf",
+    badge: "CTF Finalist",
+    badgeClass: "badge-ctf",
+    icon: "🎯",
+    desc: "Exploited misconfigured SUID binaries with wildcard injection to escalate privileges to root; decrypted custom XOR-shift ciphers.",
+    tags: ["Linux SUID", "Privilege Escalation", "Cryptography", "Bash Scripting"],
+    action: { type: "jump", section: "timeline", selector: ".timeline-entry:nth-of-type(2)" }
+  },
+  {
+    id: "owasp-conclave",
+    title: "OWASP Coimbatore Security Conclave",
+    scope: "ctf",
+    badge: "Conference",
+    badgeClass: "badge-ctf",
+    icon: "🛡️",
+    desc: "Technical workshops covering Application Security, LLM Threat Modeling (OWASP Top 10 for LLMs), and API hardening.",
+    tags: ["OWASP Top 10", "LLM Security", "BOLA / IDOR", "Threat Modeling"],
+    action: { type: "jump", section: "timeline", selector: ".timeline-entry[data-category='community']" }
+  },
+  {
+    id: "ejpt-prep",
+    title: "Regional Cyber Battle & eJPT Practical Target",
+    scope: "ctf",
+    badge: "Active Target",
+    badgeClass: "badge-ctf",
+    icon: "⚡",
+    desc: "Active lab training on Active Directory Kerberoasting, AS-REP roasting, BloodHound analysis, and Snort evasion.",
+    tags: ["Active Directory", "eJPT Prep", "Kerberoasting", "BloodHound", "Snort"],
+    action: { type: "jump", section: "timeline", selector: ".timeline-entry.upcoming" }
+  },
+
+  // 3. Credentials & Certifications
+  {
+    id: "google-cyber",
+    title: "Foundations of Cybersecurity — Google",
+    scope: "credential",
+    badge: "Certification",
+    badgeClass: "badge-credential",
+    icon: "📜",
+    desc: "Core security frameworks, threat landscape analysis, SIEM interpretation, incident response lifecycles, and risk mitigation.",
+    tags: ["Google", "Security Frameworks", "SIEM", "Incident Response", "NIST"],
+    action: { type: "jump", section: "certifications", selector: ".cred-card:nth-of-type(1)" }
+  },
+  {
+    id: "cisco-python",
+    title: "Python Essentials 1 & 2 — Cisco Networking Academy",
+    scope: "credential",
+    badge: "Certification",
+    badgeClass: "badge-credential",
+    icon: "🐍",
+    desc: "Object-oriented Python programming, socket network programming basics, file manipulation, and script automation for tooling.",
+    tags: ["Cisco", "Python 3", "Sockets", "OOP", "Scripting Automation"],
+    action: { type: "jump", section: "certifications", selector: ".cred-card:nth-of-type(2)" }
+  },
+  {
+    id: "deloitte-simulation",
+    title: "Cyber Job Simulation — Deloitte Australia",
+    scope: "credential",
+    badge: "Simulation",
+    badgeClass: "badge-credential",
+    icon: "💼",
+    desc: "Hands-on corporate security simulation: forensic log analysis, client breach response recommendations, and threat containment strategy.",
+    tags: ["Deloitte", "Forage", "Forensic Analysis", "Breach Response", "Strategy"],
+    action: { type: "jump", section: "certifications", selector: ".cred-card:nth-of-type(3)" }
+  },
+  {
+    id: "meta-analytics",
+    title: "Python Data Analytics — Meta",
+    scope: "credential",
+    badge: "Certification",
+    badgeClass: "badge-credential",
+    icon: "📊",
+    desc: "Data wrangling, log pattern recognition, statistical filtering, and exploratory data analysis applicable to threat hunting.",
+    tags: ["Meta", "Data Analytics", "Log Parsing", "Threat Hunting", "Data Wrangling"],
+    action: { type: "jump", section: "certifications", selector: ".cred-card:nth-of-type(4)" }
+  },
+
+  // 4. Tools, Hardware & Rig
+  {
+    id: "rig-workbench",
+    title: "The Lab Workbench & Infrastructure Rig",
+    scope: "skill",
+    badge: "Hardware & Tools",
+    badgeClass: "badge-skill",
+    icon: "🖥️",
+    desc: "Proxmox VE & VMware hypervisors, pfSense 2.7.x gateway with Suricata IDS, Wazuh Manager + Sysmon, Kali Linux offensive suite.",
+    tags: ["Proxmox", "VMware", "pfSense", "Wazuh", "Kali Linux", "Burp Suite", "Wireshark", "Nmap"],
+    action: { type: "jump", section: "about", selector: "#rig" }
+  },
+  {
+    id: "about-philosophy",
+    title: "Operator Background & Defensive Philosophy",
+    scope: "skill",
+    badge: "About",
+    badgeClass: "badge-skill",
+    icon: "⚡",
+    desc: "Computer Science undergrad in Chennai, India. Hands-on focus in AppSec, Network Defense, and Threat Detection.",
+    tags: ["Background", "Security Engineering", "Chennai", "AppSec", "Methodology"],
+    action: { type: "jump", section: "about", selector: "#about" }
+  },
+
+  // 5. Practice Platforms
+  {
+    id: "tryhackme",
+    title: "TryHackMe — Top 10% Global Ranking",
+    scope: "skill",
+    badge: "Platform",
+    badgeClass: "badge-skill",
+    icon: "🕹️",
+    desc: "Daily arena for Linux internals, network exploitation, privilege escalation, Wireshark dissection, and SOC analyst defense modules.",
+    tags: ["TryHackMe", "Top 10%", "Linux", "PrivEsc", "SOC Analyst"],
+    action: { type: "jump", section: "learning", selector: ".platform-card:nth-of-type(1)" }
+  },
+  {
+    id: "hackthebox",
+    title: "Hack The Box — Active Practitioner",
+    scope: "skill",
+    badge: "Platform",
+    badgeClass: "badge-skill",
+    icon: "📦",
+    desc: "Structured machine enumeration, service misconfigurations, Active Directory domains, and vulnerability weaponization.",
+    tags: ["Hack The Box", "HTB", "Active Directory", "Penetration Testing"],
+    action: { type: "jump", section: "learning", selector: ".platform-card:nth-of-type(2)" }
+  },
+
+  // 6. Community, Writing & Contributions
+  {
+    id: "owasp-prs",
+    title: "OWASP & Cortex Open-Source Contributions",
+    scope: "writing",
+    badge: "Open Source",
+    badgeClass: "badge-writing",
+    icon: "✍️",
+    desc: "Contributed to OWASP Cheat Sheet Series and TheHive Cortex-Analyzers ecosystem, improving defensive documentation.",
+    tags: ["OWASP", "TheHive", "Cortex Analyzers", "GitHub PRs", "Open Source"],
+    action: { type: "jump", section: "community", selector: ".community-card:nth-of-type(1)" }
+  },
+  {
+    id: "medium-articles",
+    title: "Medium Technical Security Research & Teardowns",
+    scope: "writing",
+    badge: "Articles",
+    badgeClass: "badge-writing",
+    icon: "📖",
+    desc: "Detailed technical articles documenting home-lab builds, vulnerability analysis, and defensive packet traces.",
+    tags: ["Medium", "Articles", "Technical Writing", "Teardowns", "Packet Traces"],
+    action: { type: "jump", section: "community", selector: ".community-card:nth-of-type(2)" }
+  },
+  {
+    id: "contact-direct",
+    title: "Get In Touch & Direct Communication Channels",
+    scope: "writing",
+    badge: "Contact",
+    badgeClass: "badge-writing",
+    icon: "✉️",
+    desc: "Connect for security engineering, defensive lab architectures, CTF collaborations, and cybersecurity opportunities.",
+    tags: ["Email", "LinkedIn", "GitHub", "Medium", "TryHackMe"],
+    action: { type: "jump", section: "contact", selector: "#contact" }
+  }
+];
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
@@ -106,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // 2. Mobile Navigation Toggle
+  // 2. Mobile Navigation Drawer Toggle
   const navToggle = $(".nav-toggle");
   const nav = $(".nav");
   if (navToggle && nav) {
@@ -150,7 +378,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tooltip.classList.add("show");
         setTimeout(() => tooltip.classList.remove("show"), 2400);
       } catch (err) {
-        // Fallback
         const textArea = document.createElement("textarea");
         textArea.value = email;
         document.body.appendChild(textArea);
@@ -164,7 +391,102 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 5. Interactive Terminal Logic
+  // 5. Hero Dual View Controller: Biometric Mesh HUD vs Bash Shell
+  const tabBiometric = $("#tab-biometric");
+  const tabTerminal = $("#tab-terminal");
+  const viewBiometric = $("#view-biometric");
+  const viewTerminal = $("#view-terminal");
+  const visualStatusText = $("#visual-status-text");
+  const btnRescan = $("#btn-rescan");
+  const btnSwitchShell = $("#btn-switch-shell");
+  const scanBar = $("#scan-bar");
+  const biometricFrame = $("#biometric-frame");
+
+  function switchHeroView(viewName) {
+    if (viewName === "terminal") {
+      if (tabTerminal) {
+        tabTerminal.classList.add("active");
+        tabTerminal.setAttribute("aria-selected", "true");
+      }
+      if (tabBiometric) {
+        tabBiometric.classList.remove("active");
+        tabBiometric.setAttribute("aria-selected", "false");
+      }
+      if (viewBiometric) viewBiometric.style.display = "none";
+      if (viewTerminal) viewTerminal.style.display = "flex";
+      if (visualStatusText) visualStatusText.textContent = "RIG ACTIVE";
+    } else {
+      if (tabBiometric) {
+        tabBiometric.classList.add("active");
+        tabBiometric.setAttribute("aria-selected", "true");
+      }
+      if (tabTerminal) {
+        tabTerminal.classList.remove("active");
+        tabTerminal.setAttribute("aria-selected", "false");
+      }
+      if (viewTerminal) viewTerminal.style.display = "none";
+      if (viewBiometric) viewBiometric.style.display = "flex";
+      if (visualStatusText) visualStatusText.textContent = "LOCK: VERIFIED";
+    }
+  }
+
+  if (tabBiometric) tabBiometric.addEventListener("click", () => switchHeroView("biometric"));
+  if (tabTerminal) tabTerminal.addEventListener("click", () => switchHeroView("terminal"));
+  if (btnSwitchShell) btnSwitchShell.addEventListener("click", () => switchHeroView("terminal"));
+
+  // Interactive Re-Scan Trigger
+  if (btnRescan) {
+    btnRescan.addEventListener("click", () => {
+      if (!scanBar || !visualStatusText) return;
+
+      visualStatusText.textContent = "RE-SCANNING...";
+      visualStatusText.style.color = "#38bdf8";
+
+      // Reset and trigger intensified scan
+      scanBar.style.animation = "none";
+      void scanBar.offsetWidth; // Trigger reflow
+      scanBar.style.animation = "scanSweep 1.2s ease-in-out 2 alternate";
+
+      // Flash landmark nodes
+      $$(".bio-node").forEach(node => {
+        node.style.boxShadow = "0 0 22px #ffffff, 0 0 35px var(--accent-cyan)";
+      });
+
+      setTimeout(() => {
+        visualStatusText.textContent = "LOCK: VERIFIED";
+        visualStatusText.style.color = "";
+        scanBar.style.animation = "scanSweep 3.5s ease-in-out infinite alternate";
+        $$(".bio-node").forEach(node => {
+          node.style.boxShadow = "";
+        });
+      }, 2500);
+    });
+  }
+
+  // 3D Parallax Tilt Effect on Mousemove over the Face Frame
+  if (biometricFrame) {
+    const viewport = $("#biometric-viewport");
+    if (viewport) {
+      viewport.addEventListener("mousemove", (e) => {
+        const rect = viewport.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        biometricFrame.style.transform = `perspective(800px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+
+      viewport.addEventListener("mouseleave", () => {
+        biometricFrame.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+      });
+    }
+  }
+
+  // 6. Interactive Terminal Logic
   const termOutput = $("#term-output");
   const termInput = $("#term-input");
   const termChips = $$(".term-chip");
@@ -175,6 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
   • <span class="term-accent">labs</span>        - List active cybersecurity labs
   • <span class="term-accent">ctfs</span>        - Review CTF competition history & placements
   • <span class="term-accent">rig</span>         - Print home lab hardware & tooling specs
+  • <span class="term-accent">search</span>      - Open global portfolio search palette (Ctrl+K)
   • <span class="term-accent">contact</span>     - View contact methods & direct links
   • <span class="term-accent">clear</span>       - Reset terminal screen`,
 
@@ -202,6 +525,11 @@ Current Status: <span class="term-highlight">🟢 LAB ACTIVE</span> — Tinkerin
   • Monitoring: Wazuh Manager v4.x + Sysmon + Elastic
   • Offensive: Kali Linux 2024, Burp Suite Pro, Wireshark, tshark, Nmap
   • Scripting: Python 3, Bash, PowerShell`,
+
+    search: () => {
+      openSearchModal();
+      return `Opened Global Search & Command Palette.`;
+    },
 
     contact: () => `Direct Communication Channels:
   • Email:    <a href="mailto:jeffshalom06@gmail.com" class="term-accent">jeffshalom06@gmail.com</a>
@@ -260,27 +588,7 @@ Current Status: <span class="term-highlight">🟢 LAB ACTIVE</span> — Tinkerin
     });
   });
 
-  // 6. Timeline Category Filter
-  const filterPills = $$(".filter-pill");
-  const timelineEntries = $$(".timeline-entry");
-
-  filterPills.forEach(pill => {
-    pill.addEventListener("click", () => {
-      filterPills.forEach(p => p.classList.remove("active"));
-      pill.classList.add("active");
-
-      const filter = pill.dataset.filter;
-      timelineEntries.forEach(entry => {
-        if (filter === "all" || entry.dataset.category === filter) {
-          entry.classList.remove("hidden");
-        } else {
-          entry.classList.add("hidden");
-        }
-      });
-    });
-  });
-
-  // 7. Project Case Studies Modal
+  // 6. Project Case Studies Modal
   const modal = $("#project-modal");
   const closeModal = () => {
     if (!modal) return;
@@ -289,35 +597,40 @@ Current Status: <span class="term-highlight">🟢 LAB ACTIVE</span> — Tinkerin
     document.body.classList.remove("modal-open");
   };
 
+  function openProjectModal(key) {
+    const project = projects[key];
+    if (!project || !modal) return;
+
+    $("#modal-kicker").textContent = project.kicker;
+    $("#modal-title").textContent = project.title;
+    $("#modal-summary").textContent = project.summary;
+    $("#modal-why").textContent = project.why;
+    $("#modal-objective").textContent = project.objective;
+    $("#modal-relevance").textContent = project.relevance;
+    $("#modal-outcome").textContent = project.outcome;
+
+    $("#modal-tools").innerHTML = project.tools.map(item => `<span class="tech-tag">${item}</span>`).join("");
+    $("#modal-skills").innerHTML = project.skills.map(item => `<span>${item}</span>`).join("");
+    $("#modal-did").innerHTML = project.did.map(item => `<li>${item}</li>`).join("");
+
+    $("#modal-evidence").innerHTML = project.evidence.map(([label, url]) => {
+      if (url) return `<a href="${url}" target="_blank" rel="noopener">${label} ↗</a>`;
+      return `<span class="placeholder-link">${label} (Available on Request)</span>`;
+    }).join("");
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    const closeBtn = $(".modal-close");
+    if (closeBtn) closeBtn.focus();
+  }
+
   $$(".project-open").forEach(button => {
     button.addEventListener("click", () => {
       const card = button.closest(".project-card");
       if (!card) return;
       const key = card.dataset.project;
-      const project = projects[key];
-      if (!project) return;
-
-      $("#modal-kicker").textContent = project.kicker;
-      $("#modal-title").textContent = project.title;
-      $("#modal-summary").textContent = project.summary;
-      $("#modal-why").textContent = project.why;
-      $("#modal-objective").textContent = project.objective;
-      $("#modal-relevance").textContent = project.relevance;
-      $("#modal-outcome").textContent = project.outcome;
-
-      $("#modal-tools").innerHTML = project.tools.map(item => `<span class="tech-tag">${item}</span>`).join("");
-      $("#modal-skills").innerHTML = project.skills.map(item => `<span>${item}</span>`).join("");
-      $("#modal-did").innerHTML = project.did.map(item => `<li>${item}</li>`).join("");
-
-      $("#modal-evidence").innerHTML = project.evidence.map(([label, url]) => {
-        if (url) return `<a href="${url}" target="_blank" rel="noopener">${label} ↗</a>`;
-        return `<span class="placeholder-link">${label} (Available on Request)</span>`;
-      }).join("");
-
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-      document.body.classList.add("modal-open");
-      $(".modal-close").focus();
+      openProjectModal(key);
     });
   });
 
@@ -331,4 +644,608 @@ Current Status: <span class="term-highlight">🟢 LAB ACTIVE</span> — Tinkerin
       closeModal();
     }
   });
+
+  // ===================================================================
+  // 7. SECTION HUB & VIEW MODE CONTROLLER (CONTINUOUS vs FOCUS VIEW)
+  // ===================================================================
+  const sectionIds = ["about", "projects", "timeline", "learning", "certifications", "community", "contact"];
+  const sectionNames = {
+    all: "All Overview",
+    about: "About & Rig",
+    projects: "Labs & Projects",
+    timeline: "CTFs & Journey",
+    learning: "Practice Platforms",
+    certifications: "Credentials",
+    community: "Community & Writing",
+    contact: "Get In Touch"
+  };
+
+  let currentViewMode = "all"; // "all" or "focus"
+  let currentFocusedSection = "projects";
+
+  const hubLabel = $("#hub-active-label");
+  const btnModeAll = $("#btn-mode-all");
+  const btnModeFocus = $("#btn-mode-focus");
+  const hubPills = $$(".hub-pill");
+  const navLinks = $$(".nav-link");
+  const sections = $$(".portfolio-section");
+  const sectionDividers = $$(".section-divider");
+
+  function pulseHighlight(el) {
+    if (!el) return;
+    el.classList.remove("search-target-pulse");
+    void el.offsetWidth; // Force reflow
+    el.classList.add("search-target-pulse");
+    setTimeout(() => el.classList.remove("search-target-pulse"), 2000);
+  }
+
+  function setViewMode(mode, targetSection = null) {
+    currentViewMode = mode;
+
+    if (mode === "focus") {
+      document.body.classList.add("focus-mode-active");
+      if (btnModeFocus) btnModeFocus.classList.add("active");
+      if (btnModeAll) btnModeAll.classList.remove("active");
+
+      const secToFocus = targetSection && targetSection !== "all" ? targetSection : currentFocusedSection;
+      focusOnSection(secToFocus);
+    } else {
+      document.body.classList.remove("focus-mode-active");
+      if (btnModeAll) btnModeAll.classList.add("active");
+      if (btnModeFocus) btnModeFocus.classList.remove("active");
+
+      // Show all sections
+      sections.forEach(s => s.classList.remove("focus-hidden"));
+      sectionDividers.forEach(d => d.classList.remove("focus-hidden"));
+
+      if (targetSection && targetSection !== "all") {
+        const targetEl = document.getElementById(targetSection);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+          pulseHighlight(targetEl);
+        }
+      }
+
+      updateActivePill("all");
+    }
+  }
+
+  function focusOnSection(secId) {
+    if (!sectionIds.includes(secId)) return;
+    currentFocusedSection = secId;
+
+    sections.forEach(section => {
+      if (section.id === secId) {
+        section.classList.remove("focus-hidden");
+        // Ensure reveal elements in this section are visible
+        $$(".reveal", section).forEach(r => r.classList.add("visible"));
+      } else {
+        section.classList.add("focus-hidden");
+      }
+    });
+
+    // Hide all dividers in focus mode
+    sectionDividers.forEach(d => d.classList.add("focus-hidden"));
+
+    updateActivePill(secId);
+
+    // Scroll to section hub so visitor sees the focused section cleanly
+    const hub = $("#section-hub");
+    if (hub) {
+      hub.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function updateActivePill(targetId) {
+    hubPills.forEach(pill => {
+      if (pill.dataset.target === targetId) {
+        pill.classList.add("active");
+        pill.setAttribute("aria-selected", "true");
+      } else {
+        pill.classList.remove("active");
+        pill.setAttribute("aria-selected", "false");
+      }
+    });
+
+    // Update header nav active link
+    navLinks.forEach(link => {
+      if (link.dataset.nav === targetId) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+
+    // Update hub label
+    if (hubLabel) {
+      const labelText = sectionNames[targetId] || targetId;
+      const prefix = currentViewMode === "focus" ? "Focused on:" : "Viewing:";
+      hubLabel.innerHTML = `${prefix} <strong>${labelText}</strong>`;
+    }
+
+    // Update floating dock active text
+    const dockSectionName = $("#dock-section-name");
+    if (dockSectionName) {
+      dockSectionName.textContent = sectionNames[targetId] || "Overview";
+    }
+  }
+
+  // Handle Hub Pill clicks
+  hubPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      const target = pill.dataset.target;
+      if (target === "all") {
+        setViewMode("all");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        if (currentViewMode === "focus") {
+          focusOnSection(target);
+        } else {
+          const targetEl = document.getElementById(target);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            updateActivePill(target);
+            pulseHighlight(targetEl);
+          }
+        }
+      }
+    });
+  });
+
+  // Handle View Mode buttons
+  if (btnModeAll) {
+    btnModeAll.addEventListener("click", () => setViewMode("all"));
+  }
+  if (btnModeFocus) {
+    btnModeFocus.addEventListener("click", () => setViewMode("focus"));
+  }
+
+  // Handle Focus Mode Footer Stepper buttons
+  $$(".focus-nav-footer").forEach(footer => {
+    const nextBtn = $(".btn-focus-next", footer);
+    const prevBtn = $(".btn-focus-prev", footer);
+    const allBtn = $(".btn-focus-all", footer);
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        const nextSec = nextBtn.dataset.next;
+        if (nextSec) focusOnSection(nextSec);
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        const prevSec = prevBtn.dataset.prev;
+        if (prevSec) focusOnSection(prevSec);
+      });
+    }
+
+    if (allBtn) {
+      allBtn.addEventListener("click", () => {
+        const parentSection = footer.closest(".portfolio-section");
+        const secId = parentSection ? parentSection.id : null;
+        setViewMode("all", secId);
+      });
+    }
+  });
+
+  // Scrollspy for Continuous View Mode
+  if ("IntersectionObserver" in window) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+      if (currentViewMode === "focus") return; // Skip in focus mode
+
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const secId = entry.target.id;
+          updateActivePill(secId);
+        }
+      });
+    }, {
+      rootMargin: "-25% 0px -65% 0px"
+    });
+
+    sections.forEach(sec => sectionObserver.observe(sec));
+  }
+
+  // ===================================================================
+  // 8. IN-SECTION LIVE FILTERS (Projects & Credentials)
+  // ===================================================================
+
+  // A. Projects Toolbar Filtering
+  const projectFilterPills = $$("#project-filters .filter-pill");
+  const projectCards = $$(".project-card");
+  const projectFilterInput = $("#project-filter-input");
+  const projectFilterClear = $("#project-filter-clear");
+
+  let activeProjectCategory = "all";
+  let activeProjectSearchQuery = "";
+
+  function applyProjectFilters() {
+    projectCards.forEach(card => {
+      const category = card.dataset.category || "all";
+      const matchesCategory = (activeProjectCategory === "all" || category === activeProjectCategory);
+
+      let matchesSearch = true;
+      if (activeProjectSearchQuery) {
+        const textContent = card.textContent.toLowerCase();
+        matchesSearch = textContent.includes(activeProjectSearchQuery);
+      }
+
+      if (matchesCategory && matchesSearch) {
+        card.classList.remove("card-filtered-hidden");
+      } else {
+        card.classList.add("card-filtered-hidden");
+      }
+    });
+
+    if (projectFilterClear) {
+      projectFilterClear.style.display = activeProjectSearchQuery ? "inline-block" : "none";
+    }
+  }
+
+  projectFilterPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      projectFilterPills.forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      activeProjectCategory = pill.dataset.filter;
+      applyProjectFilters();
+    });
+  });
+
+  if (projectFilterInput) {
+    projectFilterInput.addEventListener("input", (e) => {
+      activeProjectSearchQuery = e.target.value.trim().toLowerCase();
+      applyProjectFilters();
+    });
+  }
+
+  if (projectFilterClear) {
+    projectFilterClear.addEventListener("click", () => {
+      if (projectFilterInput) projectFilterInput.value = "";
+      activeProjectSearchQuery = "";
+      applyProjectFilters();
+    });
+  }
+
+  // B. Credentials Toolbar Filtering
+  const credFilterPills = $$("#cred-filters .filter-pill");
+  const credCards = $$(".cred-card");
+  const credFilterInput = $("#cred-filter-input");
+  const credFilterClear = $("#cred-filter-clear");
+
+  let activeCredCategory = "all";
+  let activeCredSearchQuery = "";
+
+  function applyCredFilters() {
+    credCards.forEach(card => {
+      const category = card.dataset.category || "all";
+      const matchesCategory = (activeCredCategory === "all" || category === activeCredCategory);
+
+      let matchesSearch = true;
+      if (activeCredSearchQuery) {
+        const textContent = card.textContent.toLowerCase();
+        matchesSearch = textContent.includes(activeCredSearchQuery);
+      }
+
+      if (matchesCategory && matchesSearch) {
+        card.classList.remove("card-filtered-hidden");
+      } else {
+        card.classList.add("card-filtered-hidden");
+      }
+    });
+
+    if (credFilterClear) {
+      credFilterClear.style.display = activeCredSearchQuery ? "inline-block" : "none";
+    }
+  }
+
+  credFilterPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      credFilterPills.forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      activeCredCategory = pill.dataset.filter;
+      applyCredFilters();
+    });
+  });
+
+  if (credFilterInput) {
+    credFilterInput.addEventListener("input", (e) => {
+      activeCredSearchQuery = e.target.value.trim().toLowerCase();
+      applyCredFilters();
+    });
+  }
+
+  if (credFilterClear) {
+    credFilterClear.addEventListener("click", () => {
+      if (credFilterInput) credFilterInput.value = "";
+      activeCredSearchQuery = "";
+      applyCredFilters();
+    });
+  }
+
+  // C. Timeline Category Filter
+  const timelineFilterPills = $$(".timeline-filter-bar .filter-pill");
+  const timelineEntries = $$(".timeline-entry");
+
+  timelineFilterPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      timelineFilterPills.forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+
+      const filter = pill.dataset.filter;
+      timelineEntries.forEach(entry => {
+        if (filter === "all" || entry.dataset.category === filter) {
+          entry.classList.remove("hidden");
+        } else {
+          entry.classList.add("hidden");
+        }
+      });
+    });
+  });
+
+  // ===================================================================
+  // 9. GLOBAL INTERACTIVE SEARCH & COMMAND PALETTE (Ctrl + K)
+  // ===================================================================
+  const searchModal = $("#search-modal");
+  const searchInput = $("#global-search-input");
+  const searchResultsList = $("#search-results-list");
+  const searchEmptyState = $("#search-empty-state");
+  const searchChips = $$(".search-chip");
+  const searchClearBtn = $("#search-clear-btn");
+  const searchCloseBtn = $("#search-close-btn");
+  const searchBackdrop = $("#search-backdrop");
+
+  let activeSearchScope = "all";
+  let activeSelectedIndex = 0;
+  let currentFilteredResults = [];
+
+  function openSearchModal(initialQuery = "") {
+    if (!searchModal) return;
+    searchModal.classList.add("open");
+    searchModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+
+    if (searchInput) {
+      searchInput.value = initialQuery;
+      setTimeout(() => searchInput.focus(), 50);
+    }
+
+    renderSearchResults();
+  }
+
+  function closeSearchModal() {
+    if (!searchModal) return;
+    searchModal.classList.remove("open");
+    searchModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  }
+
+  function renderSearchResults() {
+    if (!searchResultsList) return;
+
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+    currentFilteredResults = searchDatabase.filter(item => {
+      const matchesScope = (activeSearchScope === "all" || item.scope === activeSearchScope);
+      if (!matchesScope) return false;
+
+      if (!query) return true;
+
+      const titleMatch = item.title.toLowerCase().includes(query);
+      const descMatch = item.desc.toLowerCase().includes(query);
+      const tagMatch = item.tags.some(t => t.toLowerCase().includes(query));
+
+      return titleMatch || descMatch || tagMatch;
+    });
+
+    if (currentFilteredResults.length === 0) {
+      searchResultsList.innerHTML = "";
+      if (searchEmptyState) searchEmptyState.style.display = "block";
+      return;
+    }
+
+    if (searchEmptyState) searchEmptyState.style.display = "none";
+    activeSelectedIndex = 0;
+
+    searchResultsList.innerHTML = currentFilteredResults.map((item, idx) => `
+      <div class="search-result-item ${idx === 0 ? "selected" : ""}" data-index="${idx}" role="button" tabindex="0">
+        <span class="search-result-icon">${item.icon}</span>
+        <div class="search-result-content">
+          <div class="search-result-header">
+            <span class="search-result-title">${item.title}</span>
+            <span class="search-result-badge ${item.badgeClass}">${item.badge}</span>
+          </div>
+          <p class="search-result-desc">${item.desc}</p>
+          <div class="search-result-tags">
+            ${item.tags.map(tag => `<span>${tag}</span>`).join("")}
+          </div>
+        </div>
+        <span class="search-result-arrow">→</span>
+      </div>
+    `).join("");
+
+    $$(".search-result-item", searchResultsList).forEach(el => {
+      el.addEventListener("click", () => {
+        const idx = parseInt(el.dataset.index, 10);
+        executeSearchResult(currentFilteredResults[idx]);
+      });
+    });
+  }
+
+  function executeSearchResult(item) {
+    if (!item) return;
+    closeSearchModal();
+
+    if (item.action.type === "modal") {
+      openProjectModal(item.action.key);
+    } else if (item.action.type === "jump") {
+      if (currentViewMode === "focus") {
+        focusOnSection(item.action.section);
+      } else {
+        const sec = document.getElementById(item.action.section);
+        if (sec) {
+          sec.classList.remove("focus-hidden");
+          updateActivePill(item.action.section);
+        }
+      }
+
+      setTimeout(() => {
+        const targetEl = document.querySelector(item.action.selector) || document.getElementById(item.action.section);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          pulseHighlight(targetEl);
+        }
+      }, 150);
+    } else if (item.action.type === "link") {
+      window.open(item.action.url, "_blank");
+    }
+  }
+
+  // Search input event listeners
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      renderSearchResults();
+    });
+
+    searchInput.addEventListener("keydown", (e) => {
+      const items = $$(".search-result-item", searchResultsList);
+      if (!items.length) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        activeSelectedIndex = (activeSelectedIndex + 1) % items.length;
+        updateSearchSelection(items);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        activeSelectedIndex = (activeSelectedIndex - 1 + items.length) % items.length;
+        updateSearchSelection(items);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        executeSearchResult(currentFilteredResults[activeSelectedIndex]);
+      }
+    });
+  }
+
+  function updateSearchSelection(items) {
+    items.forEach((item, idx) => {
+      if (idx === activeSelectedIndex) {
+        item.classList.add("selected");
+        item.scrollIntoView({ block: "nearest" });
+      } else {
+        item.classList.remove("selected");
+      }
+    });
+  }
+
+  // Scope chips in Search Modal
+  searchChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      searchChips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      activeSearchScope = chip.dataset.scope;
+      renderSearchResults();
+      if (searchInput) searchInput.focus();
+    });
+  });
+
+  if (searchClearBtn) {
+    searchClearBtn.addEventListener("click", () => {
+      if (searchInput) {
+        searchInput.value = "";
+        searchInput.focus();
+      }
+      renderSearchResults();
+    });
+  }
+
+  if (searchCloseBtn) searchCloseBtn.addEventListener("click", closeSearchModal);
+  if (searchBackdrop) searchBackdrop.addEventListener("click", closeSearchModal);
+
+  // Search Triggers: Header button, Hub trigger, Mobile nav button, Dock button
+  const headerSearchBtn = $("#header-search-btn");
+  const hubSearchBtn = $("#hub-search-btn");
+  const mobileSearchBtn = $("#mobile-search-btn");
+  const dockSearchBtn = $("#dock-search-btn");
+
+  if (headerSearchBtn) headerSearchBtn.addEventListener("click", () => openSearchModal());
+  if (hubSearchBtn) hubSearchBtn.addEventListener("click", () => openSearchModal());
+  if (mobileSearchBtn) {
+    mobileSearchBtn.addEventListener("click", () => {
+      nav.classList.remove("open");
+      if (navToggle) navToggle.setAttribute("aria-expanded", "false");
+      openSearchModal();
+    });
+  }
+  if (dockSearchBtn) dockSearchBtn.addEventListener("click", () => openSearchModal());
+
+  // Global Keyboard Shortcut: Ctrl+K / Cmd+K or "/"
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      if (searchModal && searchModal.classList.contains("open")) {
+        closeSearchModal();
+      } else {
+        openSearchModal();
+      }
+    } else if (e.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      openSearchModal();
+    } else if (e.key === "Escape" && searchModal && searchModal.classList.contains("open")) {
+      closeSearchModal();
+    }
+  });
+
+  // ===================================================================
+  // 10. FLOATING QUICK NAVIGATION DOCK
+  // ===================================================================
+  const quickNavDock = $("#quick-nav-dock");
+  const dockNextBtn = $("#dock-next-btn");
+  const dockPrevBtn = $("#dock-prev-btn");
+
+  window.addEventListener("scroll", () => {
+    if (!quickNavDock) return;
+    if (window.scrollY > 350) {
+      quickNavDock.classList.add("visible");
+    } else {
+      quickNavDock.classList.remove("visible");
+    }
+  }, { passive: true });
+
+  if (dockNextBtn) {
+    dockNextBtn.addEventListener("click", () => {
+      const currentIndex = sectionIds.indexOf(currentFocusedSection);
+      const nextIndex = (currentIndex + 1) % sectionIds.length;
+      const nextSec = sectionIds[nextIndex];
+
+      if (currentViewMode === "focus") {
+        focusOnSection(nextSec);
+      } else {
+        const el = document.getElementById(nextSec);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          updateActivePill(nextSec);
+          pulseHighlight(el);
+        }
+      }
+    });
+  }
+
+  if (dockPrevBtn) {
+    dockPrevBtn.addEventListener("click", () => {
+      const currentIndex = sectionIds.indexOf(currentFocusedSection);
+      const prevIndex = (currentIndex - 1 + sectionIds.length) % sectionIds.length;
+      const prevSec = sectionIds[prevIndex];
+
+      if (currentViewMode === "focus") {
+        focusOnSection(prevSec);
+      } else {
+        const el = document.getElementById(prevSec);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          updateActivePill(prevSec);
+          pulseHighlight(el);
+        }
+      }
+    });
+  }
 });

@@ -19,18 +19,29 @@
       <span class="brand-text">JJS<span class="brand-dot">.</span>sec</span>
     </a>
 
+    <div class="header-center">
+      <button class="header-search-btn" id="header-search-btn" aria-label="Search portfolio (Ctrl+K)">
+        <span class="search-btn-icon">🔍</span>
+        <span class="search-btn-text">Search portfolio...</span>
+        <kbd class="search-btn-kbd">Ctrl K</kbd>
+      </button>
+    </div>
+
     <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
 
-    <nav class="nav" aria-label="Primary navigation">
-      <a href="#about">About</a>
-      <a href="#projects">Labs &amp; Projects</a>
-      <a href="#timeline">Journey &amp; CTFs</a>
-      <a href="#learning">Platforms</a>
-      <a href="#certifications">Credentials</a>
-      <a href="#community">Community</a>
-      <a href="#contact" class="nav-cta">Let's Connect ↗</a>
+    <nav class="nav" id="main-nav" aria-label="Primary navigation">
+      <a href="#about" class="nav-link" data-nav="about">About</a>
+      <a href="#projects" class="nav-link" data-nav="projects">Labs &amp; Projects</a>
+      <a href="#timeline" class="nav-link" data-nav="timeline">Journey &amp; CTFs</a>
+      <a href="#learning" class="nav-link" data-nav="learning">Platforms</a>
+      <a href="#certifications" class="nav-link" data-nav="certifications">Credentials</a>
+      <a href="#community" class="nav-link" data-nav="community">Community</a>
+      <button class="nav-mobile-search" id="mobile-search-btn">
+        <span>🔍</span> Search Portfolio <kbd>Ctrl K</kbd>
+      </button>
+      <a href="#contact" class="nav-cta" data-nav="contact">Let's Connect ↗</a>
     </nav>
   </header>
 
@@ -76,52 +87,115 @@
         </div>
       </div>
 
-      <!-- INTERACTIVE HUMAN TERMINAL -->
-      <div class="hero-terminal reveal delay-1" aria-label="Interactive Security Terminal">
-        <div class="terminal-header">
-          <div class="terminal-controls">
+      <!-- HERO RIGHT-SIDE: 3D BIOMETRIC CYBER MESH HUD & TERMINAL -->
+      <div class="hero-visual-card reveal delay-1" id="hero-visual-card" aria-label="Biometric Face Recognition & Security HUD">
+        <div class="visual-header">
+          <div class="visual-controls">
             <span class="control-close"></span>
             <span class="control-minimize"></span>
             <span class="control-maximize"></span>
           </div>
-          <div class="terminal-title">
-            <span>bash — jjs-sec-lab</span>
+
+          <!-- Dual Tab Switcher -->
+          <div class="visual-tabs" role="tablist">
+            <button type="button" class="visual-tab active" id="tab-biometric" role="tab" aria-selected="true" data-tab="biometric">
+              <span class="tab-icon">👤</span>
+              <span>Biometric Mesh</span>
+            </button>
+            <button type="button" class="visual-tab" id="tab-terminal" role="tab" aria-selected="false" data-tab="terminal">
+              <span class="tab-icon">&gt;_</span>
+              <span>Bash Shell</span>
+            </button>
           </div>
-          <div class="terminal-status-badge">
-            <span>●</span> RIG ACTIVE
+
+          <div class="visual-status-badge">
+            <span class="status-pulse-dot"></span>
+            <span id="visual-status-text">LOCK: VERIFIED</span>
           </div>
         </div>
 
-        <div class="terminal-body" id="term-output">
-          <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">whoami</span></p>
-          <p class="term-out">J Jeffrey Shalom — Cybersecurity Researcher &amp; Systems Defender</p>
+        <!-- VIEW 1: BIOMETRIC 3D WIREFRAME MESH HUD (ACTIVE BY DEFAULT) -->
+        <div class="biometric-view" id="view-biometric">
+          <div class="biometric-viewport" id="biometric-viewport">
+            <!-- Background Radial Glow -->
+            <div class="biometric-ambient-glow"></div>
 
-          <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">cat core-focus.json</span></p>
-          <div class="term-tag-grid">
-            <span>🛡️ AppSec &amp; WAF Defense</span>
-            <span>🌐 Network Segmentation</span>
-            <span>🚨 SIEM Telemetry &amp; FIM</span>
-            <span>🚩 CTF Challenge Solving</span>
+            <!-- 3D Wireframe Cyber Mesh Face -->
+            <div class="biometric-image-wrapper" id="biometric-frame">
+              <img src="assets/jeffrey-cyber-mesh.jpg" alt="J Jeffrey Shalom - 3D Polygonal Biometric Cyber Mesh" class="biometric-img" id="biometric-img" loading="eager">
+              
+              <!-- Animated Scanning Laser Bar -->
+              <div class="biometric-scan-bar" id="scan-bar"></div>
+
+              <!-- Sci-Fi HUD Corner Brackets -->
+              <div class="hud-bracket hud-tl"></div>
+              <div class="hud-bracket hud-tr"></div>
+              <div class="hud-bracket hud-bl"></div>
+              <div class="hud-bracket hud-br"></div>
+
+              <!-- Biometric Landmark Tracking Points -->
+              <div class="bio-node node-eye-l" title="Landmark: Left Orbit"></div>
+              <div class="bio-node node-eye-r" title="Landmark: Right Orbit"></div>
+              <div class="bio-node node-nose" title="Landmark: Nasal Bridge"></div>
+              <div class="bio-node node-mouth-l" title="Landmark: Labial Angle L"></div>
+              <div class="bio-node node-mouth-r" title="Landmark: Labial Angle R"></div>
+              <div class="bio-node node-chin" title="Landmark: Mental Protuberance"></div>
+
+              <!-- Crosshair Grid Markers -->
+              <div class="hud-crosshair-center"></div>
+            </div>
           </div>
 
-          <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">./lab-status --verbose</span></p>
-          <p class="term-out"><span class="term-highlight">[READY]</span> pfSense VLANs isolated · SafeLine WAF inspects HTTP · Wazuh agent syncing</p>
-          <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">echo $PHILOSOPHY</span></p>
-          <p class="term-out term-accent">"Theory tells you what can happen; packet captures and alert logs tell you what actually happened."</p>
+          <!-- Biometric View Interactive Controls -->
+          <div class="biometric-toolbar">
+            <div class="biometric-chips">
+              <button type="button" class="bio-chip" id="btn-rescan" title="Trigger fresh biometric face scan">
+                <span>⚡</span> Re-Scan Mesh
+              </button>
+              <button type="button" class="bio-chip" id="btn-switch-shell" title="Switch to interactive bash terminal">
+                <span>&gt;_</span> Launch Bash
+              </button>
+            </div>
+            <div class="biometric-signal-status">
+              <span class="signal-dot"></span>
+              <span>BIOMETRIC SCAN ACTIVE</span>
+            </div>
+          </div>
         </div>
 
-        <div class="terminal-chips">
-          <span class="terminal-chips-label">Quick Commands:</span>
-          <button class="term-chip" data-cmd="whoami">whoami</button>
-          <button class="term-chip" data-cmd="labs">labs</button>
-          <button class="term-chip" data-cmd="ctfs">ctfs</button>
-          <button class="term-chip" data-cmd="rig">rig-specs</button>
-          <button class="term-chip" data-cmd="clear">clear</button>
-        </div>
+        <!-- VIEW 2: INTERACTIVE HUMAN TERMINAL (ACCESSIBLE VIA TAB) -->
+        <div class="terminal-view" id="view-terminal" style="display: none;">
+          <div class="terminal-body" id="term-output">
+            <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">whoami</span></p>
+            <p class="term-out">J Jeffrey Shalom — Cybersecurity Researcher &amp; Systems Defender</p>
 
-        <div class="terminal-input-row">
-          <span>&gt;</span>
-          <input type="text" class="term-cli-input" id="term-input" placeholder="Type a command (or click chips above)..." autocomplete="off" spellcheck="false">
+            <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">cat core-focus.json</span></p>
+            <div class="term-tag-grid">
+              <span>🛡️ AppSec &amp; WAF Defense</span>
+              <span>🌐 Network Segmentation</span>
+              <span>🚨 SIEM Telemetry &amp; FIM</span>
+              <span>🚩 CTF Challenge Solving</span>
+            </div>
+
+            <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">./lab-status --verbose</span></p>
+            <p class="term-out"><span class="term-highlight">[READY]</span> pfSense VLANs isolated · SafeLine WAF inspects HTTP · Wazuh agent syncing</p>
+            <p class="term-line"><span class="term-prompt">jeffrey@security-lab:~$</span> <span class="term-cmd">echo $PHILOSOPHY</span></p>
+            <p class="term-out term-accent">"Theory tells you what can happen; packet captures and alert logs tell you what actually happened."</p>
+          </div>
+
+          <div class="terminal-chips">
+            <span class="terminal-chips-label">Quick Commands:</span>
+            <button class="term-chip" data-cmd="whoami">whoami</button>
+            <button class="term-chip" data-cmd="labs">labs</button>
+            <button class="term-chip" data-cmd="ctfs">ctfs</button>
+            <button class="term-chip" data-cmd="rig">rig-specs</button>
+            <button class="term-chip" data-cmd="clear">clear</button>
+          </div>
+
+          <div class="terminal-input-row">
+            <span>&gt;</span>
+            <input type="text" class="term-cli-input" id="term-input" placeholder="Type a command (or click chips above)..." autocomplete="off" spellcheck="false">
+          </div>
         </div>
       </div>
     </section>
@@ -155,10 +229,86 @@
       </div>
     </div>
 
+    <!-- ===================================================================
+         INTERACTIVE SECTION NAVIGATION HUB & VIEW CONTROLLER
+         Solves single-page cognitive fatigue with Quick Jump & Focus View modes
+         =================================================================== -->
+    <nav class="section-hub-wrapper" id="section-hub" aria-label="Section Navigation Hub">
+      <div class="container hub-container">
+        <div class="hub-top-row">
+          <div class="hub-status-indicator">
+            <span class="hub-pulse-dot"></span>
+            <span class="hub-active-label" id="hub-active-label">Viewing: <strong>All Overview</strong></span>
+          </div>
+
+          <div class="hub-controls">
+            <!-- View Mode Switcher: Continuous Stream vs Focus Mode -->
+            <div class="view-mode-toggle" role="group" aria-label="View Mode">
+              <span class="view-mode-title">Mode:</span>
+              <button type="button" class="view-mode-btn active" id="btn-mode-all" data-mode="all" title="View all sections in smooth scroll stream">
+                <span>Browse All</span>
+              </button>
+              <button type="button" class="view-mode-btn" id="btn-mode-focus" data-mode="focus" title="Focus on one section at a time to reduce cognitive clutter">
+                <span>Focus View</span>
+              </button>
+            </div>
+
+            <!-- Hub Search Trigger -->
+            <button type="button" class="hub-search-trigger" id="hub-search-btn" aria-label="Search portfolio (Ctrl+K)">
+              <span class="hub-search-icon">🔍</span>
+              <span class="hub-search-placeholder">Find lab, tool, CTF, cert...</span>
+              <kbd class="hub-search-kbd">Ctrl K</kbd>
+            </button>
+          </div>
+        </div>
+
+        <!-- Section Navigation Pills -->
+        <div class="hub-pills" id="hub-pills" role="tablist">
+          <button type="button" class="hub-pill active" data-target="all" role="tab" aria-selected="true">
+            <span class="pill-icon">⚡</span>
+            <span class="pill-title">All Overview</span>
+          </button>
+          <button type="button" class="hub-pill" data-target="about" role="tab" aria-selected="false">
+            <span class="pill-icon">🖥️</span>
+            <span class="pill-title">About &amp; Rig</span>
+          </button>
+          <button type="button" class="hub-pill" data-target="projects" role="tab" aria-selected="false">
+            <span class="pill-icon">🛡️</span>
+            <span class="pill-title">Labs &amp; Projects</span>
+            <span class="pill-badge">4</span>
+          </button>
+          <button type="button" class="hub-pill" data-target="timeline" role="tab" aria-selected="false">
+            <span class="pill-icon">🚩</span>
+            <span class="pill-title">CTFs &amp; Journey</span>
+            <span class="pill-badge">4</span>
+          </button>
+          <button type="button" class="hub-pill" data-target="learning" role="tab" aria-selected="false">
+            <span class="pill-icon">🕹️</span>
+            <span class="pill-title">Platforms</span>
+            <span class="pill-badge">3</span>
+          </button>
+          <button type="button" class="hub-pill" data-target="certifications" role="tab" aria-selected="false">
+            <span class="pill-icon">📜</span>
+            <span class="pill-title">Credentials</span>
+            <span class="pill-badge">4</span>
+          </button>
+          <button type="button" class="hub-pill" data-target="community" role="tab" aria-selected="false">
+            <span class="pill-icon">✍️</span>
+            <span class="pill-title">Community</span>
+            <span class="pill-badge">4</span>
+          </button>
+          <button type="button" class="hub-pill" data-target="contact" role="tab" aria-selected="false">
+            <span class="pill-icon">✉️</span>
+            <span class="pill-title">Contact</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
     <div class="section-divider"></div>
 
     <!-- ABOUT SECTION -->
-    <section id="about" class="container section-spacing">
+    <section id="about" class="container section-spacing portfolio-section">
       <div class="section-header reveal">
         <div class="header-tag-row">
           <span class="section-index">01</span>
@@ -194,7 +344,7 @@
         </div>
 
         <!-- LAB WORKBENCH & RIG -->
-        <aside class="rig-card reveal delay-1">
+        <aside class="rig-card reveal delay-1" id="rig">
           <div class="rig-header">
             <h3 class="rig-title">🖥️ The Lab Workbench</h3>
             <span class="rig-status">LIVE RIG</span>
@@ -243,12 +393,18 @@
           </div>
         </aside>
       </div>
+
+      <!-- FOCUS VIEW FOOTER NAVIGATION -->
+      <div class="focus-nav-footer" data-for="about">
+        <button type="button" class="focus-nav-btn btn-focus-all">⚡ Show All Sections</button>
+        <button type="button" class="focus-nav-btn btn-focus-next" data-next="projects">Next: Labs &amp; Projects →</button>
+      </div>
     </section>
 
     <div class="section-divider"></div>
 
     <!-- PROJECTS SECTION -->
-    <section id="projects" class="container section-spacing">
+    <section id="projects" class="container section-spacing portfolio-section">
       <div class="section-header reveal">
         <div class="header-tag-row">
           <span class="section-index">02</span>
@@ -260,9 +416,26 @@
         </p>
       </div>
 
-      <div class="project-grid">
+      <!-- INTERACTIVE LAB TOOLBAR: Category Filter & Live Search -->
+      <div class="section-toolbar reveal">
+        <div class="filter-pills" id="project-filters">
+          <button type="button" class="filter-pill active" data-filter="all">All Labs <span class="pill-count">4</span></button>
+          <button type="button" class="filter-pill" data-filter="appsec">AppSec &amp; WAF <span class="pill-count">1</span></button>
+          <button type="button" class="filter-pill" data-filter="network">Network &amp; Firewall <span class="pill-count">1</span></button>
+          <button type="button" class="filter-pill" data-filter="siem">SIEM &amp; SOC <span class="pill-count">1</span></button>
+          <button type="button" class="filter-pill" data-filter="ai">AI × Security <span class="pill-count">1</span></button>
+        </div>
+
+        <div class="filter-search-box">
+          <span class="filter-search-icon">🔎</span>
+          <input type="text" id="project-filter-input" placeholder="Filter labs by keyword or tool..." aria-label="Filter labs">
+          <button type="button" class="filter-clear-btn" id="project-filter-clear" aria-label="Clear filter" style="display: none;">✕</button>
+        </div>
+      </div>
+
+      <div class="project-grid" id="project-grid">
         <!-- Project 1 -->
-        <article class="project-card reveal" data-project="safeline">
+        <article class="project-card reveal" data-project="safeline" data-category="appsec">
           <div class="project-watermark">01</div>
           <div>
             <div class="project-meta-row">
@@ -286,7 +459,7 @@
         </article>
 
         <!-- Project 2 -->
-        <article class="project-card reveal delay-1" data-project="pfsense">
+        <article class="project-card reveal delay-1" data-project="pfsense" data-category="network">
           <div class="project-watermark">02</div>
           <div>
             <div class="project-meta-row">
@@ -310,7 +483,7 @@
         </article>
 
         <!-- Project 3 -->
-        <article class="project-card reveal" data-project="wazuh">
+        <article class="project-card reveal" data-project="wazuh" data-category="siem">
           <div class="project-watermark">03</div>
           <div>
             <div class="project-meta-row">
@@ -334,7 +507,7 @@
         </article>
 
         <!-- Project 4 -->
-        <article class="project-card reveal delay-1" data-project="airia">
+        <article class="project-card reveal delay-1" data-project="airia" data-category="ai">
           <div class="project-watermark">04</div>
           <div>
             <div class="project-meta-row">
@@ -356,6 +529,13 @@
             <button class="btn-open-case project-open">Inspect Case Study <span>→</span></button>
           </div>
         </article>
+      </div>
+
+      <!-- FOCUS VIEW FOOTER NAVIGATION -->
+      <div class="focus-nav-footer" data-for="projects">
+        <button type="button" class="focus-nav-btn btn-focus-prev" data-prev="about">← Prev: About &amp; Rig</button>
+        <button type="button" class="focus-nav-btn btn-focus-all">⚡ Show All Sections</button>
+        <button type="button" class="focus-nav-btn btn-focus-next" data-next="timeline">Next: CTFs &amp; Journey →</button>
       </div>
     </section>
 
@@ -420,7 +600,7 @@
          TIMELINE & CTF HUB (COMPLETELY OVERHAULED & REARRANGED)
          Fixes the broken 80px squeezed column and dead whitespace!
          =================================================================== -->
-    <section id="timeline" class="container section-spacing">
+    <section id="timeline" class="container section-spacing portfolio-section">
       <div class="section-header reveal">
         <div class="header-tag-row">
           <span class="section-index">03</span>
@@ -435,10 +615,10 @@
       <div class="timeline-hub">
         <!-- Interactive Category Filters -->
         <div class="timeline-filter-bar reveal">
-          <button class="filter-pill active" data-filter="all">All Milestones</button>
-          <button class="filter-pill" data-filter="ctf">CTF Competitions</button>
-          <button class="filter-pill" data-filter="community">Conferences &amp; Community</button>
-          <button class="filter-pill" data-filter="upcoming">Upcoming &amp; Targets</button>
+          <button class="filter-pill active" data-filter="all">All Milestones <span class="pill-count">4</span></button>
+          <button class="filter-pill" data-filter="ctf">CTF Competitions <span class="pill-count">2</span></button>
+          <button class="filter-pill" data-filter="community">Conferences &amp; Community <span class="pill-count">1</span></button>
+          <button class="filter-pill" data-filter="upcoming">Upcoming &amp; Targets <span class="pill-count">1</span></button>
         </div>
 
         <!-- Full-Width Cohesive Timeline Stream -->
@@ -600,12 +780,19 @@
           </article>
         </div>
       </div>
+
+      <!-- FOCUS VIEW FOOTER NAVIGATION -->
+      <div class="focus-nav-footer" data-for="timeline">
+        <button type="button" class="focus-nav-btn btn-focus-prev" data-prev="projects">← Prev: Labs &amp; Projects</button>
+        <button type="button" class="focus-nav-btn btn-focus-all">⚡ Show All Sections</button>
+        <button type="button" class="focus-nav-btn btn-focus-next" data-next="learning">Next: Practice Platforms →</button>
+      </div>
     </section>
 
     <div class="section-divider"></div>
 
     <!-- PRACTICAL LEARNING SECTION -->
-    <section id="learning" class="container section-spacing">
+    <section id="learning" class="container section-spacing portfolio-section">
       <div class="section-header reveal">
         <div class="header-tag-row">
           <span class="section-index">04</span>
@@ -696,12 +883,19 @@
           <a class="btn-profile" href="https://app.hackosquad.com/profile/manage" target="_blank" rel="noopener">View Challenge Log ↗</a>
         </article>
       </div>
+
+      <!-- FOCUS VIEW FOOTER NAVIGATION -->
+      <div class="focus-nav-footer" data-for="learning">
+        <button type="button" class="focus-nav-btn btn-focus-prev" data-prev="timeline">← Prev: CTFs &amp; Journey</button>
+        <button type="button" class="focus-nav-btn btn-focus-all">⚡ Show All Sections</button>
+        <button type="button" class="focus-nav-btn btn-focus-next" data-next="certifications">Next: Credentials →</button>
+      </div>
     </section>
 
     <div class="section-divider"></div>
 
     <!-- CERTIFICATIONS -->
-    <section id="certifications" class="container section-spacing">
+    <section id="certifications" class="container section-spacing portfolio-section">
       <div class="section-header reveal">
         <div class="header-tag-row">
           <span class="section-index">05</span>
@@ -713,8 +907,24 @@
         </p>
       </div>
 
-      <div class="credentials-grid">
-        <article class="cred-card reveal">
+      <!-- INTERACTIVE CREDENTIALS TOOLBAR: Category Filter & Search -->
+      <div class="section-toolbar reveal">
+        <div class="filter-pills" id="cred-filters">
+          <button type="button" class="filter-pill active" data-filter="all">All Credentials <span class="pill-count">4</span></button>
+          <button type="button" class="filter-pill" data-filter="security">Security Foundations <span class="pill-count">1</span></button>
+          <button type="button" class="filter-pill" data-filter="programming">Networking &amp; Python <span class="pill-count">2</span></button>
+          <button type="button" class="filter-pill" data-filter="simulation">Corporate Simulations <span class="pill-count">1</span></button>
+        </div>
+
+        <div class="filter-search-box">
+          <span class="filter-search-icon">🔎</span>
+          <input type="text" id="cred-filter-input" placeholder="Filter credentials..." aria-label="Filter credentials">
+          <button type="button" class="filter-clear-btn" id="cred-filter-clear" aria-label="Clear filter" style="display: none;">✕</button>
+        </div>
+      </div>
+
+      <div class="credentials-grid" id="credentials-grid">
+        <article class="cred-card reveal" data-category="security">
           <div class="cred-top">
             <span class="cred-issuer">Google</span>
             <span class="cred-type">Cybersecurity Professional</span>
@@ -729,7 +939,7 @@
           </div>
         </article>
 
-        <article class="cred-card reveal delay-1">
+        <article class="cred-card reveal delay-1" data-category="programming">
           <div class="cred-top">
             <span class="cred-issuer">Cisco Networking Academy</span>
             <span class="cred-type">Security Programming</span>
@@ -744,7 +954,7 @@
           </div>
         </article>
 
-        <article class="cred-card reveal">
+        <article class="cred-card reveal" data-category="simulation">
           <div class="cred-top">
             <span class="cred-issuer">Deloitte Australia</span>
             <span class="cred-type">Industry Simulation</span>
@@ -759,7 +969,7 @@
           </div>
         </article>
 
-        <article class="cred-card reveal delay-1">
+        <article class="cred-card reveal delay-1" data-category="programming">
           <div class="cred-top">
             <span class="cred-issuer">Meta</span>
             <span class="cred-type">Data Analysis &amp; Scripting</span>
@@ -774,12 +984,19 @@
           </div>
         </article>
       </div>
+
+      <!-- FOCUS VIEW FOOTER NAVIGATION -->
+      <div class="focus-nav-footer" data-for="certifications">
+        <button type="button" class="focus-nav-btn btn-focus-prev" data-prev="learning">← Prev: Platforms</button>
+        <button type="button" class="focus-nav-btn btn-focus-all">⚡ Show All Sections</button>
+        <button type="button" class="focus-nav-btn btn-focus-next" data-next="community">Next: Community &amp; Writing →</button>
+      </div>
     </section>
 
     <div class="section-divider"></div>
 
     <!-- COMMUNITY & FIELD NOTES -->
-    <section id="community" class="container section-spacing">
+    <section id="community" class="container section-spacing portfolio-section">
       <div class="section-header reveal">
         <div class="header-tag-row">
           <span class="section-index">06</span>
@@ -860,10 +1077,17 @@
           <span class="community-badge" style="width: fit-content;">Ongoing Collaboration</span>
         </article>
       </div>
+
+      <!-- FOCUS VIEW FOOTER NAVIGATION -->
+      <div class="focus-nav-footer" data-for="community">
+        <button type="button" class="focus-nav-btn btn-focus-prev" data-prev="certifications">← Prev: Credentials</button>
+        <button type="button" class="focus-nav-btn btn-focus-all">⚡ Show All Sections</button>
+        <button type="button" class="focus-nav-btn btn-focus-next" data-next="contact">Next: Contact →</button>
+      </div>
     </section>
 
     <!-- CONTACT SECTION -->
-    <section id="contact" class="contact-section">
+    <section id="contact" class="contact-section portfolio-section">
       <div class="container">
         <div class="contact-box reveal">
           <div class="contact-eyebrow">07 / GET IN TOUCH</div>
@@ -880,6 +1104,13 @@
             <a href="https://tryhackme.com/p/jeffshalom06" target="_blank" rel="noopener">TryHackMe <span>↗</span></a>
           </div>
         </div>
+
+        <!-- FOCUS VIEW FOOTER NAVIGATION -->
+        <div class="focus-nav-footer" data-for="contact">
+          <button type="button" class="focus-nav-btn btn-focus-prev" data-prev="community">← Prev: Community &amp; Writing</button>
+          <button type="button" class="focus-nav-btn btn-focus-all">⚡ Show All Sections</button>
+          <a href="#top" class="focus-nav-btn">Back to top ↑</a>
+        </div>
       </div>
     </section>
   </main>
@@ -892,6 +1123,68 @@
       <a href="#top">Back to top ↑</a>
     </div>
   </footer>
+
+  <!-- ===================================================================
+       INTERACTIVE SEARCH & COMMAND PALETTE MODAL (Ctrl + K)
+       Allows visitors/recruiters to immediately find any topic or skill
+       =================================================================== -->
+  <div class="search-modal" id="search-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+    <div class="search-backdrop" id="search-backdrop"></div>
+    <div class="search-container">
+      <div class="search-header">
+        <div class="search-input-wrap">
+          <span class="search-input-icon">🔍</span>
+          <input type="text" id="global-search-input" class="search-input" placeholder="Search portfolio (e.g. Wazuh, Python, CTF, pfSense, Docker, eJPT)..." autocomplete="off" spellcheck="false">
+          <button type="button" class="search-clear-btn" id="search-clear-btn" aria-label="Clear search input">✕</button>
+        </div>
+        <button type="button" class="search-close-btn" id="search-close-btn" aria-label="Close search">Esc</button>
+      </div>
+
+      <div class="search-filter-chips" id="search-filter-chips">
+        <button type="button" class="search-chip active" data-scope="all">All</button>
+        <button type="button" class="search-chip" data-scope="lab">Labs &amp; Projects</button>
+        <button type="button" class="search-chip" data-scope="ctf">CTFs &amp; Competitions</button>
+        <button type="button" class="search-chip" data-scope="credential">Credentials</button>
+        <button type="button" class="search-chip" data-scope="skill">Tools &amp; Rig</button>
+        <button type="button" class="search-chip" data-scope="writing">Community &amp; Notes</button>
+      </div>
+
+      <div class="search-body">
+        <div class="search-results-list" id="search-results-list">
+          <!-- Populated dynamically via script.js -->
+        </div>
+        <div class="search-empty-state" id="search-empty-state" style="display: none;">
+          <p class="empty-title">No matching artifacts found</p>
+          <p class="empty-subtitle">Try searching for keywords like <span class="term-accent">Wazuh</span>, <span class="term-accent">pfSense</span>, <span class="term-accent">CTF</span>, <span class="term-accent">Python</span>, or <span class="term-accent">Docker</span>.</p>
+        </div>
+      </div>
+
+      <div class="search-footer">
+        <div class="search-shortcuts">
+          <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+          <span><kbd>↵</kbd> select / open</span>
+          <span><kbd>esc</kbd> close</span>
+        </div>
+        <span class="search-footer-tag">JJS Cybersecurity Hub</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK NAVIGATION DOCK -->
+  <aside class="quick-nav-dock" id="quick-nav-dock" aria-label="Quick section navigation dock">
+    <div class="dock-inner">
+      <button type="button" class="dock-btn dock-search-btn" id="dock-search-btn" title="Quick Search (Ctrl+K)">
+        <span class="dock-icon">🔍</span>
+        <span class="dock-label">Search</span>
+      </button>
+      <div class="dock-divider"></div>
+      <span class="dock-active-section" id="dock-section-name">Overview</span>
+      <div class="dock-divider"></div>
+      <button type="button" class="dock-btn dock-nav-btn" id="dock-prev-btn" title="Previous section" aria-label="Previous section">↑</button>
+      <button type="button" class="dock-btn dock-nav-btn" id="dock-next-btn" title="Next section" aria-label="Next section">↓</button>
+      <a href="#top" class="dock-btn dock-top-btn" title="Back to top" aria-label="Back to top">⇪</a>
+    </div>
+  </aside>
 
   <script src="script.js"></script>
 </body>
